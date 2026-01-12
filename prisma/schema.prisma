@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Company {
+  id              Int       @id @default(autoincrement())
+  name            String?
+  legal_name      String?
+  phone           String?
+  email           String?
+  specialization  String?
+  logo_url        String?
+  requisites_json Json?
+  disk_quota_mb   Int?
+  disk_used_mb    Int?
+  status          String?
+  created_at      DateTime? @db.Timestamptz(6)
+
+  employees Employee[]
+  parts     Part[]
+
+  @@map("компании")
+}
+
+model Employee {
+  id            Int       @id @default(autoincrement())
+  company_id    Int?
+  full_name     String?
+  phone         String?
+  email         String?
+  position      String?
+  pin_code_hash String?
+  is_active     Boolean?
+  created_at    DateTime? @db.Timestamptz(6)
+  last_login_at DateTime? @db.Timestamptz(6)
+
+  company Company? @relation(fields: [company_id], references: [id])
+
+  @@index([company_id])
+  @@map("сотрудники")
+}
+
+model AutoDonor {
+  id             Int       @id @default(autoincrement())
+  company_id     Int?
+  vin            String?
+  make           String?
+  model          String?
+  year           Int?
+  body_type      String?
+  engine         String?
+  transmission   String?
+  purchase_price Decimal?
+  status         String?
+  created_at     DateTime? @db.Timestamptz(6)
+
+  parts Part[]
+
+  @@index([company_id])
+  @@map("авто_доноры")
+}
+
+model Part {
+  id              Int       @id @default(autoincrement())
+  company_id      Int?
+  auto_donor_id   Int?
+  name            String?
+  oem_number      String?
+  internal_sku    String?
+  condition       String?
+  current_price  Decimal?
+  temp_price     Decimal?
+  allocated_cost Decimal?
+  status          String?
+  liquidity_color String?
+  storage_days    Int?
+  created_at      DateTime? @db.Timestamptz(6)
+
+  company   Company?   @relation(fields: [company_id], references: [id])
+  autoDonor AutoDonor? @relation(fields: [auto_donor_id], references: [id])
+
+  @@index([company_id])
+  @@index([auto_donor_id])
+  @@map("запчасти")
+}
