@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { PartsController } from './parts.controller';
 import { PartsService } from './parts.service';
+import { PartsLiquidityService } from './parts-liquidity.service';
 
 @Module({
   controllers: [PartsController],
-  providers: [PartsService],
+  providers: [PartsService, PartsLiquidityService],
 })
 export class PartsModule {}
