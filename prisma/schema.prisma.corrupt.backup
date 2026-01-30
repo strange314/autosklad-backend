@@ -1,0 +1,279 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Minimal schema placeholder вЂ” will be populated by `npx prisma db pull`.
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Minimal schema so Prisma CLI can run `db pull` and regenerate models from the database.
+// The original schema is backed up to `prisma/schema.prisma.bak`.
+
+id Int @id @default(autoincrement())
+company_id Int?
+counterparty_id Int?
+employee_id Int?
+deal_id Int?
+ats_call_id String? @db.VarChar(200)
+started_at DateTime? @db.Timestamptz(6)
+duration_sec Int?
+is_missed Boolean?
+record_url String?
+ Company? @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAc
+tion)                                                                                          ? @relation(fields: [counterparty_id], references: [id], onDelete: NoAction, onUpdate: NoActi
+on)                                                                                            ? @relation(fields: [deal_id], references: [id], onDelete: NoAction, onUpdate: NoAction)     
+ Employee? @relation(fields: [employee_id], references: [id], onDelete: NoAction, onUpdate: No
+Action)                                                                                       @@map("Р·РІРѕРЅРєРё")
+}
+model  {
+id Int @id @default(autoincrement())
+code String? @db.VarChar(50)
+name String? @db.VarChar(100)
+ []
+@@map("РєР°РЅР°Р»С‹_РєРѕРјРјСѓРЅРёРєР°С†РёРё")
+}
+model  {
+id Int @id @default(autoincrement())
+company_id Int?
+name String? @db.VarChar(150)
+type String? @db.VarChar(20)
+ []
+ Company? @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAc
+tion)                                                                                         @@map("РєР°С‚РµРіРѕСЂРёРё_РґРІРёР¶РµРЅРёСЏ_РґРµРЅРµРі")
+}
+model  {
+id Int @id @default(autoincrement())
+company_id Int?
+name String? @db.VarChar(200)
+phone String? @db.VarChar(50)
+email String? @db.VarChar(150)
+type String? @db.VarChar(30)
+delivery_preferences String?
+comment String?
+created_at DateTime? @db.Timestamptz(6)
+ []
+ []
+ []
+ Company? @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAc
+tion)                                                                                          []
+@@map("РєРѕРЅС‚СЂР°РіРµРЅС‚С‹")
+}
+model  {
+id Int @id @default(autoincrement())
+code String? @db.VarChar(50)
+name String? @db.VarChar(100)
+ []
+@@map("РјР°СЂРєРµС‚РїР»РµР№СЃС‹")
+}
+model  {
+id Int @id @default(autoincrement())
+company_id Int?
+url String?
+type String? @db.VarChar(20)
+file_size Int?
+owner_type String? @db.VarChar(30)
+owner_id Int?
+created_at DateTime? @db.Timestamptz(6)
+ Company? @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAc
+tion)                                                                                          []
+@@map("РјРµРґРёР°_С„Р°Р№Р»С‹")
+}
+model  {
+id Int @id @default(autoincrement())
+company_id Int?
+parent_id Int?
+type String? @db.VarChar(20)
+code String? @db.VarChar(100)
+qr_code_value String? @db.VarChar(200)
+barcode_value String? @db.VarChar(200)
+description String?
+ Company? @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAc
+tion)                                                                                          ? @relation("To", fields: [parent_id], references: [id], onDelete: NoAction, onUpdate: NoActi
+on)                                                                                           other_ [] @relation("To")
+ []
+@@map("РјРµСЃС‚Р°_С…СЂР°РЅРµРЅРёСЏ")
+}
+model  {
+id Int @id @default(autoincrement())
+part_id Int?
+location_id Int?
+status String? @db.VarChar(20)
+quantity Int?
+created_at DateTime? @db.Timestamptz(6)
+moved_at DateTime? @db.Timestamptz(6)
+ ? @relation(fields: [location_id], references: [id], onDelete: NoAction, onUpdate: NoAction) 
+ Part? @relation(fields: [part_id], references: [id], onDelete: NoAction, onUpdate: NoAction) 
+@@map("РѕСЃС‚Р°С‚РєРё_Р·Р°РїС‡Р°СЃС‚РµР№")
+}
+model  {
+id Int @id @default(autoincrement())
+company_id Int?
+deal_id Int?
+provider String? @db.VarChar(50)
+amount Decimal? @db.Decimal(12, 2)
+currency String? @db.VarChar(10)
+paid_at DateTime? @db.Timestamptz(6)
+status String? @db.VarChar(20)
+provider_payment_id String? @db.VarChar(200)
+created_at DateTime? @db.Timestamptz(6)
+ Company? @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAc
+tion)                                                                                          ? @relation(fields: [deal_id], references: [id], onDelete: NoAction, onUpdate: NoAction)     
+ []
+@@map("РїР»Р°С‚РµР¶Рё")
+}
+model  {
+id Int @id @default(autoincrement())
+company_id Int?
+tariff_plan_id Int?
+start_at DateTime? @db.Timestamptz(6)
+end_at DateTime? @db.Timestamptz(6)
+status String? @db.VarChar(20)
+own_sales_team Boolean?
+sales_team_model String? @db.VarChar(30)
+created_at DateTime? @db.Timestamptz(6)
+ Company? @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAc
+tion)                                                                                          ? @relation(fields: [tariff_plan_id], references: [id], onDelete: NoAction, onUpdate: NoActio
+n)                                                                                            @@map("РїРѕРґРїРёСЃРєРё_РєРѕРјРїР°РЅРёР№")
+}
+model  {
+id Int @id @default(autoincrement())
+deal_id Int?
+part_id Int?
+quantity Int?
+price Decimal? @db.Decimal(12, 2)
+cost Decimal? @db.Decimal(12, 2)
+reserved_from DateTime? @db.Timestamptz(6)
+reserved_until DateTime? @db.Timestamptz(6)
+reservation_status String? @db.VarChar(20)
+ ? @relation(fields: [deal_id], references: [id], onDelete: NoAction, onUpdate: NoAction)     
+ Part? @relation(fields: [part_id], references: [id], onDelete: NoAction, onUpdate: NoAction) 
+@@map("РїРѕР·РёС†РёРё_СЃРґРµР»РєРё")
+}
+model  {
+id Int @id @default(autoincrement())
+role_id Int?
+permission_code String? @db.VarChar(100)
+ ? @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction)     
+@@map("РїСЂР°РІР°_СЂРѕР»РµР№")
+}
+model  {
+id Int @id @default(autoincrement())
+company_id Int?
+name String? @db.VarChar(100)
+is_system_default Boolean?
+ []
+ Company? @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAc
+tion)                                                                                          []
+@@map("СЂРѕР»Рё")
+}
+/// This model or at least one of its fields has comments in the database, and requires an add
+itional setup for migrations: Read more: https://pris.ly/d/database-comments                  model  {
+employee_id Int
+role_id Int
+ Employee @relation(fields: [employee_id], references: [id], onDelete: NoAction, onUpdate: NoA
+ction)                                                                                          @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction)      
+@@id([employee_id, role_id])
+@@map("СЂРѕР»Рё_СЃРѕС‚СЂСѓРґРЅРёРєРѕРІ")
+}
+model  {
+id Int @id @default(autoincrement())
+company_id Int?
+subdomain String? @db.VarChar(150)
+theme String? @db.VarChar(20)
+is_active Boolean?
+settings_json Json?
+ Company? @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAc
+tion)                                                                                         @@map("СЃР°Р№С‚С‹_РєРѕРјРїР°РЅРёР№")
+}
+model  {
+id Int @id @default(autoincrement())
+company_id Int?
+counterparty_id Int?
+responsible_employee_id Int?
+stage String? @db.VarChar(30)
+total_amount Decimal? @db.Decimal(12, 2)
+total_cost Decimal? @db.Decimal(12, 2)
+profit Decimal? @db.Decimal(12, 2)
+source String? @db.VarChar(50)
+created_at DateTime? @db.Timestamptz(6)
+closed_at DateTime? @db.Timestamptz(6)
+ []
+ []
+ []
+ []
+ []
+ []
+ Company? @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAc
+tion)                                                                                          ? @relation(fields: [counterparty_id], references: [id], onDelete: NoAction, onUpdate: NoActi
+on)                                                                                            Employee? @relation(fields: [responsible_employee_id], references: [id], onDelete: NoAction, 
+onUpdate: NoAction)                                                                           @@map("СЃРґРµР»РєРё")
+}
+model  {
+id Int @id @default(autoincrement())
+conversation_id Int?
+sender_type String? @db.VarChar(30)
+employee_id Int?
+text String?
+attachments_json Json?
+sent_at DateTime? @db:Timestamptz(6)
+ ? @relation(fields: [conversation_id], references: [id], onDelete: NoAction, onUpdate: NoAc
+tion)                                                                                            Employee? @relation(fields: [employee_id], references: [id], onDelete: NoAction, onUpdate: No
+Action)                                                                                       @@map("СЃРѕРѕР±С‰РµРЅРёСЏ")
+}
+model  {
+id Int @id @default(autoincrement())
+code String? @db.VarChar(50)
+name String? @db.VarChar(100)
+price_month Decimal? @db.Decimal(12, 2)
+description String?
+settings_json Json?
+created_at DateTime? @db:Timestamptz(6)
+updated_at DateTime? @db:Timestamptz(6)
+ []
+@@map("С‚Р°СЂРёС„РЅС‹Рµ_РїР»Р°РЅС‹")
+}
+model  {
+id Int @id @default(autoincrement())
+company_marketplace_account_id Int?
+part_id Int?
+external_product_id String? @db.VarChar(200)
+listing_url String?
+status String? @db.VarChar(20)
+ ? @relation(fields: [company_marketplace_account_id], references: [id], onDelete: NoAction, o
+nUpdate: NoAction, map: "С‚РѕРІР°СЂС‹_РЅР°_РјР°СЂРєРµ_company_marketplace_account__fkey")      Part? @relation(fields: [part_id], references: [id], onDelete: NoAction, onUpdate: NoAction) 
+@@map("С‚РѕРІР°СЂС‹_РЅР°_РјР°СЂРєРµС‚РїР»РµР№СЃР°С…")
+}
+model  {
+id Int @id @default(autoincrement())
+part_id Int?
+media_file_id Int?
+is_main Boolean?
+has_defect_mark Boolean?
+has_watermark Boolean?
+background_removed Boolean?
+ ? @relation(fields: [media_file_id], references: [id], onDelete: NoAction, onUpdate: NoAction
+)                                                                                              Part? @relation(fields: [part_id], references: [id], onDelete: NoAction, onUpdate: NoAction) 
+@@map("С„РѕС‚Рѕ_Р·Р°РїС‡Р°СЃС‚РµР№")
+}
+model  {
+id Int @id @default(autoincrement())
+payment_id Int?
+atol_receipt_id String? @db.VarChar(200)
+receipt_url String?
+sent_to String? @db.VarChar(150)
+sent_via String? @db.VarChar(20)
+created_at DateTime? @db:Timestamptz(6)
+ ? @relation(fields: [payment_id], references: [id], onDelete: NoAction, onUpdate: NoAction)  
+@@map("С‡РµРєРё")
+}
