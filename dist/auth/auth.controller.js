@@ -15,12 +15,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
 const common_1 = require("@nestjs/common");
 const auth_service_1 = require("./auth.service");
+const jwt_auth_guard_1 = require("./jwt-auth.guard");
+const set_pin_dto_1 = require("./dto/set-pin.dto");
+const pin_login_dto_1 = require("./dto/pin-login.dto");
 let AuthController = class AuthController {
     constructor(auth) {
         this.auth = auth;
     }
     login(body) {
         return this.auth.loginByEmployeeId(Number(body.employee_id));
+    }
+    setPin(req, dto) {
+        return this.auth.setPin(req.user.employee_id, dto.pin);
+    }
+    loginByPin(dto) {
+        return this.auth.loginByPin(dto.employee_id, dto.pin);
     }
 };
 exports.AuthController = AuthController;
@@ -31,6 +40,22 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "login", null);
+__decorate([
+    (0, common_1.Post)('pin/set'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, set_pin_dto_1.SetPinDto]),
+    __metadata("design:returntype", void 0)
+], AuthController.prototype, "setPin", null);
+__decorate([
+    (0, common_1.Post)('pin/login'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [pin_login_dto_1.PinLoginDto]),
+    __metadata("design:returntype", void 0)
+], AuthController.prototype, "loginByPin", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [auth_service_1.AuthService])
