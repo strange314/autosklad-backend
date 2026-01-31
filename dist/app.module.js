@@ -12,12 +12,25 @@ const schedule_1 = require("@nestjs/schedule");
 const prisma_module_1 = require("./prisma/prisma.module");
 const auth_module_1 = require("./auth/auth.module");
 const parts_module_1 = require("./parts/parts.module");
+const access_module_1 = require("./access/access.module");
+const donors_module_1 = require("./donors/donors.module");
+const deals_module_1 = require("./deals/deals.module");
+const finance_module_1 = require("./finance/finance.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [schedule_1.ScheduleModule.forRoot(), prisma_module_1.PrismaModule, auth_module_1.AuthModule, parts_module_1.PartsModule],
+        imports: [
+            schedule_1.ScheduleModule.forRoot(),
+            prisma_module_1.PrismaModule,
+            auth_module_1.AuthModule,
+            parts_module_1.PartsModule,
+            access_module_1.AccessModule,
+            donors_module_1.DonorsModule,
+            deals_module_1.DealsModule,
+            finance_module_1.FinanceModule,
+        ],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

@@ -18,12 +18,13 @@ const auth_service_1 = require("./auth.service");
 const jwt_auth_guard_1 = require("./jwt-auth.guard");
 const set_pin_dto_1 = require("./dto/set-pin.dto");
 const pin_login_dto_1 = require("./dto/pin-login.dto");
+const employee_login_dto_1 = require("./dto/employee-login.dto");
 let AuthController = class AuthController {
     constructor(auth) {
         this.auth = auth;
     }
-    login(body) {
-        return this.auth.loginByEmployeeId(Number(body.employee_id));
+    login(dto) {
+        return this.auth.loginByEmployeeId(dto.employee_id);
     }
     setPin(req, dto) {
         return this.auth.setPin(req.user.employee_id, dto.pin);
@@ -37,7 +38,7 @@ __decorate([
     (0, common_1.Post)('login'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [employee_login_dto_1.EmployeeLoginDto]),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "login", null);
 __decorate([

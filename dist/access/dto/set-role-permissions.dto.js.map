@@ -1,0 +1,1 @@
+{"version":3,"file":"set-role-permissions.dto.js","sourceRoot":"","sources":["../../../src/access/dto/set-role-permissions.dto.ts"],"names":[],"mappings":";;;;;;;;;;;;AAAA,qDAA4E;AAE5E,MAAa,qBAAqB;CAMjC;AAND,sDAMC;AADC;IAJC,IAAA,yBAAO,GAAE;IACT,IAAA,6BAAW,GAAE;IACb,IAAA,0BAAQ,EAAC,EAAE,IAAI,EAAE,IAAI,EAAE,CAAC;IACxB,IAAA,2BAAS,EAAC,GAAG,EAAE,EAAE,IAAI,EAAE,IAAI,EAAE,CAAC;;0DACR"}

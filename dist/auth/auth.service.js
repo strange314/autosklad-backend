@@ -38,6 +38,9 @@ let AuthService = class AuthService {
         const payload = { sub: emp.id, company_id: emp.company_id ?? undefined };
         return { access_token: await this.jwt.signAsync(payload) };
     }
+    async issueTokenForEmployee(emp) {
+        return this.signToken(emp);
+    }
     async setPin(employeeId, pin) {
         const hash = await bcrypt.hash(pin, 10);
         await this.prisma.employee.update({
@@ -53,8 +56,12 @@ let AuthService = class AuthService {
     }
     async loginByPin(employee_id, pin) {
         const employee = await this.prisma.employee.findUnique({ where: { id: employee_id } });
-        if (!employee)
+        if (!employee || !employee.company_id) {
             throw new common_1.UnauthorizedException('Неверные данные');
+        }
+        if (employee.is_active === false) {
+            throw new common_1.UnauthorizedException('Employee inactive');
+        }
         if (employee.pin_locked_until && employee.pin_locked_until > new Date()) {
             throw new common_1.ForbiddenException('PIN временно заблокирован');
         }

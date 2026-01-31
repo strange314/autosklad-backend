@@ -6,19 +6,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PartsModule = void 0;
+exports.FinanceModule = void 0;
 const common_1 = require("@nestjs/common");
-const parts_controller_1 = require("./parts.controller");
-const parts_service_1 = require("./parts.service");
-const parts_liquidity_service_1 = require("./parts-liquidity.service");
+const finance_controller_1 = require("./finance.controller");
+const finance_service_1 = require("./finance.service");
 const permissions_guard_1 = require("../auth/permissions.guard");
-let PartsModule = class PartsModule {
+let FinanceModule = class FinanceModule {
 };
-exports.PartsModule = PartsModule;
-exports.PartsModule = PartsModule = __decorate([
+exports.FinanceModule = FinanceModule;
+exports.FinanceModule = FinanceModule = __decorate([
     (0, common_1.Module)({
-        controllers: [parts_controller_1.PartsController],
-        providers: [parts_service_1.PartsService, parts_liquidity_service_1.PartsLiquidityService, permissions_guard_1.PermissionsGuard],
+        controllers: [finance_controller_1.FinanceController],
+        providers: [finance_service_1.FinanceService, permissions_guard_1.PermissionsGuard],
     })
-], PartsModule);
-//# sourceMappingURL=parts.module.js.map
+], FinanceModule);
+//# sourceMappingURL=finance.module.js.map
