@@ -32,6 +32,10 @@ export class AuthService {
     return { access_token: await this.jwt.signAsync(payload) };
   }
 
+  async issueTokenForEmployee(emp: { id: number; company_id?: number | null }) {
+    return this.signToken(emp);
+  }
+
   private readonly MAX_PIN_ATTEMPTS = 5;
   private readonly LOCK_MINUTES = 10;
 
@@ -53,7 +57,13 @@ export class AuthService {
 
   async loginByPin(employee_id: number, pin: string) {
     const employee = await this.prisma.employee.findUnique({ where: { id: employee_id } });
-    if (!employee) throw new UnauthorizedException('Неверные данные');
+    if (!employee || !employee.company_id) {
+      throw new UnauthorizedException('Неверные данные');
+    }
+
+    if (employee.is_active === false) {
+      throw new UnauthorizedException('Employee inactive');
+    }
 
     if (employee.pin_locked_until && employee.pin_locked_until > new Date()) {
       throw new ForbiddenException('PIN временно заблокирован');

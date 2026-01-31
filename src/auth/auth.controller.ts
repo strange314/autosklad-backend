@@ -3,14 +3,15 @@ import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { SetPinDto } from './dto/set-pin.dto';
 import { PinLoginDto } from './dto/pin-login.dto';
+import { EmployeeLoginDto } from './dto/employee-login.dto';
 
 @Controller('auth')
 export class AuthController {
   constructor(private auth: AuthService) {}
 
   @Post('login')
-  login(@Body() body: { employee_id: number }) {
-    return this.auth.loginByEmployeeId(Number(body.employee_id));
+  login(@Body() dto: EmployeeLoginDto) {
+    return this.auth.loginByEmployeeId(dto.employee_id);
   }
 
   @Post('pin/set')
