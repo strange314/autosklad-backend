@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
+﻿import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
@@ -8,8 +8,8 @@ export class AuthService {
   constructor(private prisma: PrismaService, private jwt: JwtService) {}
 
   /**
-   * ВРЕМЕННЫЙ логин (для старта разработки):
-   * вход по employee_id, дальше заменим на phone+sms или PIN.
+   * Р’Р Р•РњР•РќРќР«Р™ Р»РѕРіРёРЅ (РґР»СЏ СЃС‚Р°СЂС‚Р° СЂР°Р·СЂР°Р±РѕС‚РєРё):
+   * РІС…РѕРґ РїРѕ employee_id, РґР°Р»СЊС€Рµ Р·Р°РјРµРЅРёРј РЅР° phone+sms РёР»Рё PIN.
    */
   async loginByEmployeeId(employeeId: number) {
     const emp = await this.prisma.employee.findUnique({
@@ -55,8 +55,15 @@ export class AuthService {
     return { ok: true };
   }
 
-  async loginByPin(employee_id: number, pin: string) {
-    const employee = await this.prisma.employee.findUnique({ where: { id: employee_id } });
+  async loginByPin(employee_id: number | undefined, phone: string | undefined, pin: string) {
+    if (!employee_id && !phone) {
+      throw new UnauthorizedException('Неверные данные');
+    }
+
+    const employee = employee_id
+      ? await this.prisma.employee.findUnique({ where: { id: employee_id } })
+      : await this.prisma.employee.findFirst({ where: { phone: phone ?? undefined } });
+
     if (!employee || !employee.company_id) {
       throw new UnauthorizedException('Неверные данные');
     }
@@ -78,7 +85,7 @@ export class AuthService {
       const attempts = (employee.pin_failed_attempts ?? 0) + 1;
 
       await this.prisma.employee.update({
-        where: { id: employee_id },
+        where: { id: employee.id },
         data: {
           pin_failed_attempts: attempts,
           pin_locked_until:
@@ -92,7 +99,7 @@ export class AuthService {
     }
 
     await this.prisma.employee.update({
-      where: { id: employee_id },
+      where: { id: employee.id },
       data: { pin_failed_attempts: 0, pin_locked_until: null, last_login_at: new Date() },
     });
 

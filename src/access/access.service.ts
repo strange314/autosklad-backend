@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
+﻿import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuthService } from '../auth/auth.service';
@@ -16,14 +16,14 @@ export class AccessService {
   private readonly DEFAULT_PERMISSIONS = [
     'parts.read',
     'parts.write',
+    'deals.read',
+    'deals.write',
+    'finance.read',
+    'finance.write',
     'roles.manage',
     'employees.manage',
     'company.manage',
-    'deals.manage',
-    'deals.manager_close',
-    'deals.accountant_close',
-    'deals.director_close',
-    'finance.manage',
+    'billing.manage',
   ];
 
   constructor(private prisma: PrismaService, private auth: AuthService) {}

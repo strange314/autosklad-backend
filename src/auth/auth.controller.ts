@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
+﻿import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { SetPinDto } from './dto/set-pin.dto';
@@ -22,6 +22,6 @@ export class AuthController {
 
   @Post('pin/login')
   loginByPin(@Body() dto: PinLoginDto) {
-    return this.auth.loginByPin(dto.employee_id, dto.pin);
+    return this.auth.loginByPin(dto.employee_id, dto.phone, dto.pin);
   }
 }

@@ -7,6 +7,8 @@ import { AccessModule } from './access/access.module';
 import { DonorsModule } from './donors/donors.module';
 import { DealsModule } from './deals/deals.module';
 import { FinanceModule } from './finance/finance.module';
+import { CompaniesModule } from './companies/companies.module';
+import { BillingModule } from './billing/billing.module';
 
 @Module({
   imports: [
@@ -18,6 +20,8 @@ import { FinanceModule } from './finance/finance.module';
     DonorsModule,
     DealsModule,
     FinanceModule,
+    CompaniesModule,
+    BillingModule,
   ],
 })
 export class AppModule {}
